@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModCoderPack Redevelop</title>
+    <style>
+        :root {
+            --ba-blue: #00A3FF;
+            --ba-sky: #E1F5FE;
+            --ba-text: #1A3144;
+            --gh-blur: rgba(255, 255, 255, 0.4);
+        }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'Segoe UI', sans-serif;
+            color: var(--ba-text);
+            overflow: hidden;
+        }
+
+        /* Hình nền cửa sổ (Background chính) */
+        .bg-view {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://bluearchive.jp/img/main_visual.jpg') no-repeat center center;
+            background-size: cover;
+            z-index: -1;
+        }
+
+        /* Navbar mảnh - Cực kỳ tối giản */
+        nav {
+            position: absolute; top: 0; width: 100%;
+            display: flex; justify-content: center;
+            padding: 15px 0; background: rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        nav a {
+            color: white; text-decoration: none; font-size: 11px;
+            margin: 0 20px; letter-spacing: 2px; font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: var(--ba-blue); }
+
+        /* Tiêu đề chính (Brand) */
+        .brand {
+            position: absolute; top: 80px; left: 5%;
+            font-size: 28px; font-weight: 900; color: white;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Khung nội dung GitHub (Dạng Card trong suốt) */
+        .content-card {
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -40%);
+            width: 70%; max-width: 800px;
+            background: var(--gh-blur);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 4px; /* Blue Archive dùng bo góc cực nhẹ hoặc vuông */
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .repo-name {
+            font-size: 1.5rem; color: var(--ba-blue);
+            font-weight: bold; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 10px;
+        }
+
+        .repo-desc { font-size: 1rem; opacity: 0.8; line-height: 1.6; }
+
+        /* Nút bấm kiểu Blue Archive jp */
+        .action-group {
+            position: absolute; left: 5%; bottom: 10%;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+
+        .ba-btn {
+            width: 220px; height: 45px;
+            background: #222; color: white;
+            border: none; display: flex; align-items: center;
+            padding: 0 20px; font-size: 13px; font-weight: bold;
+            cursor: pointer; transition: 0.3s;
+            clip-path: polygon(0 0, 95% 0, 100% 30%, 100% 100%, 5% 100%, 0 70%);
+        }
+
+        .ba-btn:hover { background: var(--ba-blue); transform: translateX(10px); }
+        .ba-btn.primary { background: var(--ba-blue); margin-bottom: 5px; }
+
+        /* Chân trang */
+        footer {
+            position: absolute; bottom: 20px; width: 100%;
+            text-align: center; font-size: 10px; opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-view"></div>
+
+    <nav>
+        <a href="/">HOME</a>
+        <a href="https://github.com/modcoderpack-redevelop">GITHUB</a>
+        <a href="https://github.com/modcoderpack-redevelop/releases">RELEASES</a>
+        <a href="#">SYSTEM</a>
+    </nav>
+
+    <div class="brand">
+        ModCoderPack<br>
+        <span style="font-size: 14px; color: var(--ba-blue);">Redevelop Project</span>
+    </div>
+
+    <div class="content-card">
+        <div class="repo-name">
+             modcoderpack-redevelop
+             <span style="font-size: 10px; background: var(--ba-blue); color: white; padding: 2px 8px; border-radius: 10px;">Public</span>
+        </div>
+        <div class="repo-desc">
+            Dự án tái thiết kế ModCoderPack, cung cấp môi trường làm việc tối ưu và các bản release ổn định cho cộng đồng. 
+            Mọi phiên làm việc được ghi nhận tự động bởi hệ thống SCHALE.
+        </div>
+        <div style="margin-top: 30px; display: flex; gap: 20px; font-size: 12px; font-weight: bold; opacity: 0.7;">
+            <span>● TypeScript</span>
+            <span>⭐ Star: --</span>
+            <span>🍴 Fork: --</span>
+        </div>
+    </div>
+
+    <div class="action-group">
+        <button class="ba-btn primary" onclick="go('latest')">LATEST RELEASE</button>
+        <button class="ba-btn" onclick="go('win')">Windows Download</button>
+        <button class="ba-btn" onclick="go('source')">Source Code (Zip)</button>
+    </div>
+
+    <footer>
+        © 2026 PmgTeam | Developed by PepperMCGamers Ch. Pmgteam
+    </footer>
+
+    <script>
+        // AutoSave ngầm: Lưu lại lựa chọn tải về của người dùng
+        function go(type) {
+            let logs = JSON.parse(localStorage.getItem('mcp_site_logs') || '[]');
+            logs.push({ type, date: new Date().toLocaleString() });
+            localStorage.setItem('mcp_site_logs', JSON.stringify(logs.slice(-10)));
+            
+            console.log(`[AutoSave] Action: ${type}`);
+
+            const urls = {
+                'latest': 'https://github.com/modcoderpack-redevelop/releases/latest',
+                'win': 'https://github.com/modcoderpack-redevelop/releases',
+                'source': 'https://github.com/modcoderpack-redevelop/archive/refs/heads/main.zip'
+            };
+            
+            if(urls[type]) window.location.href = urls[type];
+        }
+    </script>
+</body>
+  </html>
