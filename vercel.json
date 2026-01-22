@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/github",
+      "destination": "https://github.com/modcoderpack-redevelop",
+      "permanent": true
+    },
+    {
+      "source": "/latest",
+      "destination": "https://github.com/modcoderpack-redevelop/releases/latest",
+      "permanent": false
+    },
+    {
+      "source": "/download/(.*)",
+      "destination": "https://github.com/modcoderpack-redevelop/releases/download/$1",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/system",
+      "destination": "/index.html"
+    }
+  ]
+}
